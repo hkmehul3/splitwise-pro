@@ -8,23 +8,22 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  name     String?
-  email    String  @unique
-  password String?
-  image    String?
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String?
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  memberships  Membership[]
-  paidExpenses Expense[]    @relation("PaidExpenses")
-
-  expenseSplits ExpenseSplit[] // ADD THIS LINE
-
-  settlementsPaid     Settlement[] @relation("SettlementFrom")
-  settlementsReceived Settlement[] @relation("SettlementTo")
+  accounts            Account[]
+  sessions            Session[]
+  memberships         Membership[]
+  paidExpenses        Expense[]      @relation("PaidExpenses")
+  expenseSplits       ExpenseSplit[]
+  settlementsPaid     Settlement[]   @relation("SettlementFrom")
+  settlementsReceived Settlement[]   @relation("SettlementTo")
   comments            Comment[]
-
-  accounts Account[]
-  sessions Session[]
 }
 
 model Account {
