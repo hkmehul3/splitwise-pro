@@ -10,6 +10,6 @@ export async function POST(req: Request) {
   const { name, email, password } = parsed.data;
   const existing = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
   if (existing) return NextResponse.json({ error: 'Email already registered' }, { status: 409 });
-  const user = await prisma.user.create({ data: { name, email: email.toLowerCase(), passwordHash: await hash(password, 12) }, select: { id: true, name: true, email: true } });
+  const user = await prisma.user.create({ data: { name, email: email.toLowerCase(), password: await hash(password, 12) }, select: { id: true, name: true, email: true } });
   return NextResponse.json(user, { status: 201 });
 }

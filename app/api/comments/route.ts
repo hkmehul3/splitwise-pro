@@ -10,6 +10,6 @@ export async function POST(req:Request){
  if(!expense) return NextResponse.json({error:'Expense not found'},{status:404});
  const member=await prisma.membership.findUnique({where:{userId_groupId:{userId:auth.userId, groupId:expense.groupId}}});
  if(!member) return NextResponse.json({error:'Not a group member'},{status:403});
- const comment=await prisma.comment.create({data:{expenseId:parsed.data.expenseId,userId:auth.userId,body:parsed.data.body}, include:{user:{select:{name:true,email:true}}}});
+ const comment=await prisma.comment.create({data:{expenseId:parsed.data.expenseId,userId:auth.userId,text:parsed.data.body}, include:{user:{select:{name:true,email:true}}}});
  return NextResponse.json(comment,{status:201});
 }

@@ -8,6 +8,13 @@ export async function POST(req: Request) {
  const parsed=schema.safeParse(await req.json()); if(!parsed.success) return NextResponse.json({error:parsed.error.flatten()},{status:400});
  const membership=await prisma.membership.findUnique({where:{userId_groupId:{userId:auth.userId, groupId:parsed.data.groupId}}});
  if(!membership) return NextResponse.json({error:'Not a group member'},{status:403});
- const settlement=await prisma.settlement.create({data:parsed.data});
+ const settlement = await prisma.settlement.create({
+  data: {
+    groupId: parsed.data.groupId,
+    fromId: parsed.data.fromUserId,
+    toId: parsed.data.toUserId,
+    amount: parsed.data.amount
+  }
+});
  return NextResponse.json(settlement,{status:201});
 }
